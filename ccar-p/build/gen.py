@@ -22,41 +22,12 @@ for i,x in enumerate(Q):
                     opts=[o[0] for o in opts],notes=[o[1] for o in opts],ans=ans,why=x['why'],src=x['src']))
 json.dump(out,open('questions.json','w'),ensure_ascii=False,indent=1)
 
-# ---- Markdown ----
-md=[]
-md.append("## 9. 模擬試験（30問・目安57分）\n")
-md.append("> 本番のペース（120分/63問 ≒ 1問1.9分）に合わせ、**30問を57分**で解いてください。問題は分野の配点に比例して配分しています（分野3：6問、分野1：5問、分野4：5問、分野5：4問、分野6：4問、分野2：4問、分野7：2問）。【2つ選んでください】と書かれた問題は、選んだものがすべて一致したときだけ正解です。HTML版（ccar-p-mock-exam.html）も同じ問題です。\n")
-for x in out:
-    md.append(f"**問{x['no']}**（{x['dn']}）{'【複数選択：'+str(x['pick'])+'つ】' if x['multi'] else ''}  \n{x['stem']}\n")
-    for j,o in enumerate(x['opts']): md.append(f"- {L[j]}. {o}")
-    md.append("")
-md.append("---\n\n## 10. 解答・分野別スコア表・解説\n")
-md.append("### 10-1. 解答一覧\n")
-md.append("| 問 | 正解 | 分野 | 問 | 正解 | 分野 | 問 | 正解 | 分野 |\n|---|---|---|---|---|---|---|---|---|")
-for r in range(10):
-    cells=[]
-    for c in range(3):
-        x=out[c*10+r]; cells+= [str(x['no']), ",".join(L[a] for a in x['ans']), str(x['d'])]
-    md.append("| "+" | ".join(cells)+" |")
 from collections import Counter
-cnt=Counter(x['d'] for x in out)
-md.append("\n### 10-2. 分野別スコア表（自己採点用）\n")
-md.append("| 分野 | 配点 | 問題番号 | 問題数 | 正解数 | 正答率 |\n|---|---|---|---|---|---|")
-for d in [3,1,4,5,6,2,7]:
-    nos=",".join(str(x['no']) for x in out if x['d']==d)
-    md.append(f"| {DN[d]} | {W[d]}% | {nos} | {cnt[d]} | ／{cnt[d]} | ％ |")
-md.append("| 合計 | 100% |  | 30 | ／30 | ％ |")
-md.append("\n> 目安：**全体で80%（24問）以上**、各分野で60%以上を目標にしてください（本番のスケールスコア720は正答率72%を意味しない【要確認】。余裕を持たせた目安です）。正答率が低い分野は、第1〜7章の該当する章を読み直してください。\n")
-md.append("### 10-3. 各問の解説\n")
-for x in out:
-    md.append(f"**問{x['no']}　正解：{','.join(L[a] for a in x['ans'])}**（{x['dn']}）  ")
-    md.append(f"{x['why']}  ")
-    for j,nt in enumerate(x['notes']):
-        mark="○" if j in x['ans'] else "×"
-        md.append(f"- {mark} {L[j]}：{nt}")
-    md.append(f"- 出典：{x['src']}\n")
-md.append("---\n")
-body=open('part1.md').read()+open('part2.md').read()+"\n".join(md)+"\n"+open('part4.md').read()
+# ---- Markdown（模擬試験・解答・解説はHTMLに集約。.md には案内だけを入れる） ----
+md=["## 9. 模擬試験（HTML版）\n",
+    f"模擬試験（{len(out)}問・解答と解説つき）は `ccar-p-mock-exam.html` で解いてください。目安時間は57分です。分野別スコアもHTML上で自動集計されます。\n",
+    "---\n"]
+body=open('part1.md').read()+open('part2.md').read()+"\n"+"\n".join(md)+"\n"+open('part4.md').read()
 open('../ccar-p-study-guide.md','w').write(body)
 
 # ---- HTML ----

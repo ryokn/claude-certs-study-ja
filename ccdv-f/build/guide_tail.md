@@ -1,21 +1,18 @@
+## 11. 直前チェックリスト
 
----
-
-## 12. 直前チェックリスト
-
-### 12-1. 前日（11/9）
+### 11-1. 前日（11/9）
 - [ ] Pearson の予約が**日本語**になっているか確認する（英語で予約していたら、48時間前までにキャンセルして日本語で取り直す：FAQ）
 - [ ] 本人確認書類（有効期限内の政府発行の写真付きID）の**ローマ字氏名が、Pearson の登録氏名と完全に一致**しているか確認する
 - [ ] オンライン受験なら：Pearson のシステムテスト、個室、机の上の片付け、外部モニターを外す。社内ネットワークなら OnVUE に必要なドメインへ通信できるか確認する
 - [ ] 模擬試験で間違えた問題を解き直す。この学習ガイドの「ひっかけ」表をすべて読み直す
 
-### 12-2. 当日
+### 11-2. 当日
 - [ ] 開始の30分前には準備を終える（着席時間は約135分）
 - [ ] 時間配分：53問を120分、1問あたり約2.2分。迷った問題はフラグを付けて先に進む。最後の15〜20分で見直す
 - [ ] 「○つ選択」の数を必ず確認する
 - [ ] 消去法：「お願い」「temperature」「とりあえず大きなモデル」「無限リトライ」「全部をコンテキストに貼る」は、たいてい誤り
 
-### 12-3. 頻出ひっかけの総復習（★）
+### 11-3. 頻出ひっかけの総復習（★）
 | # | よくある誤答 | 正解の方向 |
 |---|---|---|
 | 1 | 同期の並列送信で安くなる | **バッチ（50%割引、24時間以内、custom_id で照合）** |
@@ -41,7 +38,7 @@
 | 21 | CI で対話モード | `claude -p`、`--output-format json`、`--bare` |
 | 22 | モデルは常に最新を自動で | **固定して eval で検証**してから更新する |
 
-### 12-4. 出典（2026-11-03 JST に確認）
+### 11-4. 出典（2026-11-03 JST に確認）
 - 試験ガイド（英語）v1.0：https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf
 - 試験ガイド（日本語）v1.0：https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F34hhd92iyp94a0gtbr15cy5jk%2Fpublic%2F1792453728%2FClaude+Certified+Developer+-+Foundations+Exam+Guide+%28Japanese%29.pdf
 - Partner Academy FAQ：https://anthropic-partners.skilljar.com/page/faq-certifications

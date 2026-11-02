@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json, random, html, os
 from questions import Q, DOMAINS, S
-OUT = "/workspace/claude-certs/ccar-f"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 L = "ABCDE"
 # 正解位置をバランスよく配置（単一選択）：A..Dを循環させつつ乱数で並べ替え
 rng = random.Random(20261116)
@@ -36,48 +36,10 @@ for it in items:
 TARGET_MIN = len(items) * 2
 dshort = {"D1": "分野1 エージェント", "D2": "分野2 ツール/MCP", "D3": "分野3 Claude Code", "D4": "分野4 プロンプト/構造化", "D5": "分野5 コンテキスト/信頼性"}
 
-# ---------- Markdown: §8 mock & §9 answers ----------
-md = []
-md.append("## 8. 模擬試験（%d問・目標 %d分）\n" % (len(items), TARGET_MIN))
-md.append("- 本番と同じく **1問2分**ペース。単一選択が基本で、【2つ】と書かれた問題は複数選択（本番も各問題に選ぶ数が明記されます）。")
-md.append("- 分野配分：" + "、".join("%s %d問" % (dshort[d], sum(1 for x in items if x['d'] == d)) for d in ["D1", "D2", "D3", "D4", "D5"]) + "（配点比率にほぼ比例）。")
-md.append("- 同じ問題をスマホ/ブラウザで解ける `ccar-f-mock-exam.html` もあります（進捗は自動保存）。")
-md.append("- 問題はすべてガイドのタスクステートメントに基づくオリジナル問題です。\n")
-for it in items:
-    md.append("### Q%d（%s ／ タスク%s）%s" % (it["id"], it["scenario"], it["task"], "【2つ選択】" if it["multi"] > 1 else ""))
-    md.append("")
-    md.append(it["q"])
-    md.append("")
-    for k, c in enumerate(it["choices"]):
-        md.append("- **%s.** %s" % (L[k], c["t"]))
-    md.append("")
-md.append("---\n")
-md.append("## 9. 解答一覧・分野別スコア表・解説\n")
-md.append("### 9.1 解答一覧\n")
-md.append("| 問 | 正解 | 分野 | タスク | 問 | 正解 | 分野 | タスク |")
-md.append("|---|---|---|---|---|---|---|---|")
-half = (len(items) + 1) // 2
-for r in range(half):
-    a = items[r]; b = items[r + half] if r + half < len(items) else None
-    row = "| Q%d | %s | %s | %s |" % (a["id"], "・".join(a["answer"]), a["d"][1], a["task"])
-    row += (" Q%d | %s | %s | %s |" % (b["id"], "・".join(b["answer"]), b["d"][1], b["task"])) if b else " | | | |"
-    md.append(row)
-md.append("\n（複数選択は全部正しく選んで1点、とする採点。本番の部分点の有無は【要確認】）\n")
-md.append("### 9.2 分野別スコア表（記入用）\n")
-md.append("| 分野 | 問題番号 | 問題数 | 正解数 | 正答率 | 目標 |")
-md.append("|---|---|---|---|---|---|")
-for d in ["D1", "D2", "D3", "D4", "D5"]:
-    ids = [x["id"] for x in items if x["d"] == d]
-    md.append("| %s | Q%d〜Q%d | %d | ／%d | %% | 80%%以上 |" % (DOMAINS[d], ids[0], ids[-1], len(ids), len(ids)))
-md.append("| 合計 | | %d | ／%d | %% | 80%%以上（※スケールスコア720は正答率と1対1対応しない。目安として余裕を持つ） |" % (len(items), len(items)))
-md.append("\n### 9.3 各問の解説\n")
-for it in items:
-    md.append("#### Q%d 正解：%s（%s ／ タスク%s）" % (it["id"], "・".join(it["answer"]), DOMAINS[it["d"]], it["task"]))
-    md.append("")
-    for k, c in enumerate(it["choices"]):
-        md.append("- %s **%s.** %s" % ("✅" if c["ok"] else "❌", L[k], c["why"]))
-    md.append("")
-mock_md = "\n".join(md) + "\n---\n\n"
+# ---------- Markdown（模擬試験・解答・解説はHTMLに集約。.md には案内だけを入れる） ----------
+mock_md = ("## 8. 模擬試験（HTML版）\n\n"
+           "模擬試験（%d問・解答と解説つき）は `ccar-f-mock-exam.html` で解いてください。"
+           "目標時間は%d分です。分野別スコアもHTML上で自動集計され、進捗は自動保存されます。\n\n---\n\n" % (len(items), TARGET_MIN))
 
 parts = [open(os.path.join(os.path.dirname(__file__), p), encoding="utf-8").read() for p in ["part1.md", "part2.md", "part3.md", "part4.md"]]
 tail = open(os.path.join(os.path.dirname(__file__), "part5.md"), encoding="utf-8").read()
