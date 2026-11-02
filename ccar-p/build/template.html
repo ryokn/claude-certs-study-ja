@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCAR-P 模擬試験（30問・日本語）</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2430;--mute:#5b6678;--line:#dfe3ea;--acc:#c15f3c;--ok:#1f8a4c;--ng:#c0392b;--okbg:#e8f6ee;--ngbg:#fdecea;--sel:#fff3ec}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:8px 12px}
+.hrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;max-width:880px;margin:0 auto}
+h1{font-size:16px;margin:0}
+.stat{font-size:13px;color:var(--mute)}
+.stat b{color:var(--ink)}
+.bar{height:4px;background:var(--line);max-width:880px;margin:6px auto 0;border-radius:2px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--acc);width:0}
+main{max-width:880px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:12px}
+.tag{display:inline-block;font-size:12px;background:#eef1f6;color:var(--mute);border-radius:999px;padding:2px 10px;margin-right:6px}
+.tag.multi{background:#fff0e6;color:var(--acc);font-weight:600}
+.stem{font-size:16px;margin:10px 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:12px;margin:8px 0;cursor:pointer;background:#fff}
+.opt input{margin-top:5px;transform:scale(1.2)}
+.opt.sel{background:var(--sel);border-color:var(--acc)}
+.opt.correct{background:var(--okbg);border-color:var(--ok)}
+.opt.wrong{background:var(--ngbg);border-color:var(--ng)}
+.opt .lt{font-weight:700;min-width:1.2em}
+.opt .note{display:block;font-size:13px;color:var(--mute);margin-top:4px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 14px;cursor:pointer;min-height:42px}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+.res{border-radius:8px;padding:12px;margin-top:12px}
+.res.ok{background:var(--okbg);border:1px solid var(--ok)}
+.res.ng{background:var(--ngbg);border:1px solid var(--ng)}
+.res h3{margin:0 0 6px;font-size:15px}
+.src{font-size:12px;color:var(--mute);word-break:break-all}
+.pal{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.pal button{padding:6px 0;min-height:36px;font-size:13px}
+.pal .c{background:var(--okbg);border-color:var(--ok)}
+.pal .w{background:var(--ngbg);border-color:var(--ng)}
+.pal .a{background:var(--sel);border-color:var(--acc)}
+.pal .cur{outline:2px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+th{background:#f0f2f6}
+.big{font-size:28px;font-weight:700}
+.hide{display:none}
+.legend{font-size:12px;color:var(--mute);margin-top:6px}
+@media (max-width:560px){.pal{grid-template-columns:repeat(6,1fr)}.stem{font-size:15px}h1{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="hrow">
+  <h1>CCAR-P 模擬試験</h1>
+  <div class="stat">回答 <b id="sAns">0</b>/30 ・ 正解 <b id="sOk">0</b> ・ 経過 <b id="sTime">0:00</b>（目安 57:00）</div>
+ </div>
+ <div class="bar"><i id="pbar"></i></div>
+</header>
+<main>
+ <section id="vQ" class="card">
+  <div><span class="tag" id="qNo"></span><span class="tag" id="qDom"></span><span class="tag multi hide" id="qMulti"></span></div>
+  <div class="stem" id="qStem"></div>
+  <div id="qOpts"></div>
+  <div class="btns">
+   <button id="bPrev">← 前へ</button>
+   <button id="bCheck" class="primary">答え合わせ</button>
+   <button id="bNext">次へ →</button>
+  </div>
+  <div id="qRes" class="res hide"></div>
+ </section>
+ <section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+   <b>問題一覧</b>
+   <div class="btns" style="margin:0"><button id="bResult">結果を見る</button><button id="bReset">リセット</button></div>
+  </div>
+  <div class="pal" id="pal"></div>
+  <div class="legend">緑=正解 / 赤=不正解 / 橙=選択中（未採点） ・ 進捗はこのブラウザ（localStorage）に自動保存されます</div>
+ </section>
+ <section id="vR" class="card hide">
+  <h2 style="margin-top:0;font-size:18px">結果</h2>
+  <div><span class="big" id="rScore"></span> <span id="rPct"></span></div>
+  <p id="rMsg" style="margin:6px 0 12px"></p>
+  <table><thead><tr><th>分野</th><th>正解/問題数</th><th>正答率</th></tr></thead><tbody id="rTbl"></tbody></table>
+  <p style="font-size:12px;color:var(--mute)">目安：全体80%以上、各分野60%以上。本番のスケールスコア720は正答率72%を意味しません（要確認）。未回答の問題は不正解として集計します。</p>
+  <div id="rWrong"></div>
+ </section>
+</main>
+<script>
+(function(){
+"use strict";
+var Q=/*__DATA__*/[];
+var DN=/*__DN__*/{};
+var ORDER=["3","1","4","5","6","2","7"];
+var KEY="ccarp-mock-v1";
+var L="ABCDEFG";
+var st=load();
+function blank(){return {cur:0,sel:{},chk:{},elapsed:0};}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object"&&s.sel&&s.chk)return s;}catch(e){}return blank();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function esc(t){return String(t).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function same(a,b){if(a.length!==b.length)return false;var x=a.slice().sort(),y=b.slice().sort();for(var i=0;i<x.length;i++)if(x[i]!==y[i])return false;return true;}
+function isOk(q){return !!st.chk[q.no]&&same(st.sel[q.no]||[],q.ans);}
+function score(){
+ var by={},tot=0,ok=0;ORDER.forEach(function(d){by[d]={n:0,ok:0};});
+ Q.forEach(function(q){var d=String(q.d);by[d].n++;tot++;if(isOk(q)){by[d].ok++;ok++;}});
+ return {by:by,tot:tot,ok:ok};
+}
+function fmt(s){s=Math.floor(s);var m=Math.floor(s/60),r=s%60;return m+":"+(r<10?"0":"")+r;}
+function renderHead(){
+ var a=0;Q.forEach(function(q){if(st.chk[q.no])a++;});
+ $("sAns").textContent=a;$("sOk").textContent=score().ok;
+ $("pbar").style.width=(a/Q.length*100)+"%";
+}
+function renderPal(){
+ var p=$("pal");p.innerHTML="";
+ Q.forEach(function(q,i){
+  var b=document.createElement("button");b.textContent=q.no;b.setAttribute("data-no",q.no);
+  if(st.chk[q.no])b.className=isOk(q)?"c":"w";else if((st.sel[q.no]||[]).length)b.className="a";
+  if(i===st.cur)b.className+=" cur";
+  b.onclick=function(){st.cur=i;save();renderQ();renderPal();$("vR").classList.add("hide");$("vQ").scrollIntoView({behavior:"smooth"});};
+  p.appendChild(b);
+ });
+}
+function renderQ(){
+ var q=Q[st.cur],sel=st.sel[q.no]||[],done=!!st.chk[q.no];
+ $("qNo").textContent="問"+q.no+" / "+Q.length;
+ $("qDom").textContent=q.dn;
+ var m=$("qMulti");if(q.multi){m.textContent=q.pick+"つ選択";m.classList.remove("hide");}else m.classList.add("hide");
+ $("qStem").textContent=q.stem;
+ var box=$("qOpts");box.innerHTML="";
+ q.opts.forEach(function(o,j){
+  var lab=document.createElement("label");lab.className="opt";
+  var inp=document.createElement("input");inp.type=q.multi?"checkbox":"radio";inp.name="o";inp.value=j;inp.checked=sel.indexOf(j)>=0;inp.disabled=done;
+  inp.onchange=function(){pick(q,j,inp.checked);};
+  lab.appendChild(inp);
+  var sp=document.createElement("span");sp.innerHTML='<span class="lt">'+L[j]+'.</span> '+esc(o)+(done?'<span class="note">'+(q.ans.indexOf(j)>=0?"○ ":"× ")+esc(q.notes[j])+'</span>':"");
+  lab.appendChild(sp);
+  if(done){if(q.ans.indexOf(j)>=0)lab.classList.add("correct");else if(sel.indexOf(j)>=0)lab.classList.add("wrong");}
+  else if(sel.indexOf(j)>=0)lab.classList.add("sel");
+  box.appendChild(lab);
+ });
+ var c=$("bCheck");c.disabled=done||(q.multi?sel.length!==q.pick:sel.length!==1);
+ c.textContent=done?"採点済み":(q.multi&&sel.length!==q.pick?q.pick+"つ選んでください":"答え合わせ");
+ $("bPrev").disabled=st.cur===0;
+ $("bNext").textContent=st.cur===Q.length-1?"結果を見る →":"次へ →";
+ var r=$("qRes");
+ if(done){var ok=isOk(q);r.className="res "+(ok?"ok":"ng");
+  r.innerHTML="<h3>"+(ok?"正解！":"不正解")+"　正解："+q.ans.map(function(a){return L[a];}).join(",")+"</h3><div>"+esc(q.why)+'</div><div class="src">出典：'+esc(q.src)+"</div>";}
+ else{r.className="res hide";r.innerHTML="";}
+}
+function pick(q,j,on){
+ if(st.chk[q.no])return;
+ var s=(st.sel[q.no]||[]).slice();
+ if(q.multi){var k=s.indexOf(j);if(on&&k<0)s.push(j);if(!on&&k>=0)s.splice(k,1);}else s=[j];
+ st.sel[q.no]=s;save();renderQ();renderPal();
+}
+function check(){var q=Q[st.cur];var s=st.sel[q.no]||[];if(st.chk[q.no])return;if(q.multi?s.length!==q.pick:s.length!==1)return;st.chk[q.no]=true;save();renderQ();renderPal();renderHead();}
+function renderResult(){
+ var s=score();var pct=Math.round(s.ok/s.tot*100);
+ $("rScore").textContent=s.ok+" / "+s.tot;$("rPct").textContent="（"+pct+"%）";
+ $("rMsg").textContent=pct>=80?"合格の目安（80%）に達しています。不正解の問題の解説を確認しましょう。":"目安の80%に届いていません。正答率の低い分野の章を復習しましょう。";
+ var tb=$("rTbl");tb.innerHTML="";
+ ORDER.forEach(function(d){var b=s.by[d];if(!b.n)return;var p=Math.round(b.ok/b.n*100);
+  var tr=document.createElement("tr");tr.setAttribute("data-d",d);
+  tr.innerHTML="<td>"+esc(DN[d])+"</td><td>"+b.ok+" / "+b.n+"</td><td style=\"color:"+(p>=60?"var(--ok)":"var(--ng)")+"\">"+p+"%</td>";tb.appendChild(tr);});
+ var w=Q.filter(function(q){return !isOk(q);});
+ $("rWrong").innerHTML=w.length?"<p><b>見直す問題：</b>"+w.map(function(q){return '<a href="#" data-go="'+(q.no-1)+'">問'+q.no+(st.chk[q.no]?"":"（未回答）")+"</a>";}).join("、")+"</p>":"<p>全問正解です！</p>";
+ Array.prototype.forEach.call($("rWrong").querySelectorAll("a[data-go]"),function(a){a.onclick=function(e){e.preventDefault();st.cur=+a.getAttribute("data-go");save();renderQ();renderPal();$("vQ").scrollIntoView({behavior:"smooth"});};});
+ $("vR").classList.remove("hide");$("vR").scrollIntoView({behavior:"smooth"});
+}
+$("bPrev").onclick=function(){if(st.cur>0){st.cur--;save();renderQ();renderPal();}};
+$("bNext").onclick=function(){if(st.cur<Q.length-1){st.cur++;save();renderQ();renderPal();window.scrollTo(0,0);}else renderResult();};
+$("bCheck").onclick=check;
+$("bResult").onclick=renderResult;
+$("bReset").onclick=function(){if(confirm("回答と経過時間をすべてリセットしますか？")){st=blank();save();renderQ();renderPal();renderHead();$("vR").classList.add("hide");}};
+var last=Date.now();
+setInterval(function(){var now=Date.now();if(!document.hidden){st.elapsed+=(now-last)/1000;}last=now;$("sTime").textContent=fmt(st.elapsed);save();},1000);
+$("sTime").textContent=fmt(st.elapsed);
+if(st.cur<0||st.cur>=Q.length)st.cur=0;
+renderQ();renderPal();renderHead();
+window.__ccarp={Q:Q,state:function(){return st;},score:score};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCDV-F 模擬試験（30問・日本語）</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--sub:#5b6475;--acc:#c96442;--ok:#1f8a4c;--ng:#c0392b;--line:#dde1e7}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--line);padding:10px 14px;z-index:5}
+header h1{font-size:16px;margin:0}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--sub);margin-top:4px}
+.prog{flex:1;min-width:120px;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--acc);width:0}
+main{max-width:760px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.meta{font-size:12px;color:var(--sub);margin-bottom:6px}
+.badge{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;background:#fbe9e2;color:var(--acc);margin-left:6px}
+.qtext{font-size:16px;margin:4px 0 12px}
+label.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;cursor:pointer;background:#fff}
+label.opt input{margin-top:5px;transform:scale(1.2)}
+label.opt.correct{border-color:var(--ok);background:#eaf7ef}
+label.opt.wrongpick{border-color:var(--ng);background:#fdecea}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 14px;cursor:pointer}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.result{margin-top:12px;padding:12px;border-radius:10px;font-size:14px}
+.result.ok{background:#eaf7ef;border:1px solid #b9e3c8}
+.result.ng{background:#fdecea;border:1px solid #f3c1bb}
+.result ul{margin:6px 0 0 18px;padding:0}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.grid button{padding:6px 0;font-size:13px}
+.grid .done-ok{background:#eaf7ef;border-color:var(--ok)}
+.grid .done-ng{background:#fdecea;border-color:var(--ng)}
+.grid .cur{outline:2px solid var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+td.num{text-align:right}
+.hidden{display:none}
+small.note{color:var(--sub)}
+@media (max-width:520px){.grid{grid-template-columns:repeat(6,1fr)}.qtext{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>CCDV-F 模擬試験（オリジナル30問・目標65分）</h1>
+  <div class="bar"><span id="count">0/30 回答済み</span><div class="prog"><i id="progbar"></i></div><span id="timer">⏱ 00:00</span></div>
+</header>
+<main>
+  <section class="card" id="nav">
+    <div class="meta">問題一覧（緑＝正解、赤＝不正解）</div>
+    <div class="grid" id="grid"></div>
+    <div class="btns">
+      <button id="showResult">結果（分野別スコア）を見る</button>
+      <button id="reviewWrong">間違えた問題だけ解き直す</button>
+      <button id="reset">最初からやり直す</button>
+    </div>
+    <small class="note">進捗はこのブラウザに自動保存されます（localStorage）。実際の試験問題ではありません。</small>
+  </section>
+  <section class="card" id="qcard"></section>
+  <section class="card hidden" id="rcard"></section>
+</main>
+<script>
+const DATA = /*__DATA__*/[];
+const DOMAINS = /*__DOMAINS__*/{};
+const ORDER = ["D2","D5","D1","D6","D8","D7","D3","D4"];
+const KEY = "ccdvf-mock-v1";
+let st = load();
+function blank(){return {cur:0, sel:{}, checked:{}, start:null, reviewOnly:false};}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==="object"&&s.sel)return s;}catch(e){}return blank();}
+function save(){try{localStorage.setItem(KEY, JSON.stringify(st));}catch(e){}}
+function isCorrect(i){const q=DATA[i];const s=(st.sel[i]||[]).slice().sort();return s.length===q.answer.length&&s.every((v,k)=>v===q.answer[k]);}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function score(){const by={};ORDER.forEach(d=>by[d]={n:0,ok:0,done:0});let ok=0,done=0;
+  DATA.forEach((q,i)=>{by[q.domain].n++;if(st.checked[i]){done++;by[q.domain].done++;if(isCorrect(i)){ok++;by[q.domain].ok++;}}});
+  return {by,ok,done,total:DATA.length};}
+function visible(){if(!st.reviewOnly)return DATA.map((_,i)=>i);return DATA.map((_,i)=>i).filter(i=>st.checked[i]&&!isCorrect(i));}
+function renderGrid(){const g=document.getElementById("grid");g.innerHTML="";
+  DATA.forEach((q,i)=>{const b=document.createElement("button");b.textContent=i+1;
+    if(st.checked[i])b.className=isCorrect(i)?"done-ok":"done-ng";
+    if(i===st.cur)b.classList.add("cur");
+    b.onclick=()=>{st.cur=i;save();render();window.scrollTo(0,document.getElementById("qcard").offsetTop-70);};g.appendChild(b);});
+  const s=score();document.getElementById("count").textContent=`${s.done}/${s.total} 回答済み・正解 ${s.ok}`;
+  document.getElementById("progbar").style.width=(100*s.done/s.total)+"%";}
+function renderQ(){const i=st.cur,q=DATA[i],c=document.getElementById("qcard");const chk=!!st.checked[i];const sel=st.sel[i]||[];
+  const type=q.multi?"checkbox":"radio";const need=q.answer.length;
+  let h=`<div class="meta">問${q.n} / ${DATA.length}　${esc(q.dname)}／${esc(q.skill)}${q.multi?'<span class="badge">'+need+'つ選択</span>':'<span class="badge">1つ選択</span>'}</div>`;
+  h+=`<div class="qtext">${esc(q.q.replace(/^【2つ選択】/,""))}</div><form id="f">`;
+  q.choices.forEach(([k,v])=>{let cls="opt";if(chk){if(q.answer.includes(k))cls+=" correct";else if(sel.includes(k))cls+=" wrongpick";}
+    h+=`<label class="${cls}"><input type="${type}" name="o" value="${k}" ${sel.includes(k)?"checked":""} ${chk?"disabled":""}><span><b>${k}.</b> ${esc(v)}</span></label>`;});
+  h+=`</form><div class="btns"><button id="prev">← 前へ</button><button class="primary" id="check" ${chk?"disabled":""}>答え合わせ</button><button id="next">次へ →</button></div>`;
+  if(chk){const ok=isCorrect(i);h+=`<div class="result ${ok?"ok":"ng"}"><b>${ok?"⭕ 正解":"❌ 不正解"}</b>（正解：${q.answer.join(", ")}／あなたの解答：${sel.length?sel.join(", "):"未選択"}）<br><b>なぜ正解か：</b>${esc(q.why)}<ul>`+q.wrong.map(([k,v])=>`<li><b>${k}</b>：${esc(v)}</li>`).join("")+`</ul></div>`;}
+  c.innerHTML=h;
+  c.querySelectorAll("input[name=o]").forEach(inp=>inp.onchange=()=>{let s=st.sel[i]||[];
+    if(type==="radio")s=[inp.value];else{s=inp.checked?[...new Set([...s,inp.value])]:s.filter(v=>v!==inp.value);}
+    st.sel[i]=s.sort();if(!st.start)st.start=Date.now();save();});
+  document.getElementById("check").onclick=()=>{const s=st.sel[i]||[];
+    if(s.length!==need){alert(`${need}つ選んでください（現在 ${s.length}つ）`);return;}
+    st.checked[i]=true;save();render();};
+  const vis=visible();
+  document.getElementById("prev").onclick=()=>{const p=vis.filter(k=>k<i);if(p.length){st.cur=p[p.length-1];save();render();}};
+  document.getElementById("next").onclick=()=>{const n=vis.filter(k=>k>i);if(n.length){st.cur=n[0];save();render();}else{showResult();}};}
+function showResult(){const s=score(),r=document.getElementById("rcard");r.classList.remove("hidden");
+  const pct=s.done?Math.round(100*s.ok/s.done):0;
+  let h=`<div class="meta">結果</div><div class="qtext">正解 <b>${s.ok}</b> / 回答 ${s.done}（全${s.total}問）　正答率 <b>${pct}%</b>　${s.done===s.total?(s.ok>=24?"✅ 目安（8割）クリア":"⚠ 目安（8割＝24問）未達"):"（未回答あり）"}</div>`;
+  h+=`<table><tr><th>分野</th><th class="num">正解/問題数</th><th class="num">正答率</th></tr>`;
+  ORDER.forEach(d=>{const b=s.by[d];const p=b.done?Math.round(100*b.ok/b.done)+"%":"-";h+=`<tr><td>${esc(DOMAINS[d])}</td><td class="num">${b.ok}/${b.n}</td><td class="num">${p}</td></tr>`;});
+  h+=`</table><small class="note">本番はスケールスコア（720/1000で合格）のため、正答率とは直接対応しません。正答率の低い分野は学習ガイドの該当章を読み直しましょう。</small>`;
+  r.innerHTML=h;r.scrollIntoView({behavior:"smooth"});}
+function tick(){const t=document.getElementById("timer");if(!st.start){t.textContent="⏱ 00:00";return;}
+  const sec=Math.floor((Date.now()-st.start)/1000);const m=String(Math.floor(sec/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");
+  t.textContent=`⏱ ${m}:${s}`+(sec>65*60?"（目標65分超過）":"");}
+function render(){renderGrid();renderQ();tick();}
+document.getElementById("showResult").onclick=showResult;
+document.getElementById("reset").onclick=()=>{if(confirm("解答をすべて消して最初からやり直しますか？")){st=blank();save();document.getElementById("rcard").classList.add("hidden");render();}};
+document.getElementById("reviewWrong").onclick=()=>{const wrong=DATA.map((_,i)=>i).filter(i=>st.checked[i]&&!isCorrect(i));
+  if(!wrong.length){alert("間違えた問題はありません（または未回答です）");return;}
+  wrong.forEach(i=>{delete st.checked[i];delete st.sel[i];});st.reviewOnly=false;st.cur=wrong[0];save();render();};
+setInterval(tick,1000);
+render();
+</script>
+</body>
+</html>
