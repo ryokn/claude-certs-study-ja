@@ -466,6 +466,31 @@ while True:
 
 模擬試験（30問・解答と解説つき）は `ccdv-f-mock-exam.html` で解いてください。分野別スコアもHTML上で自動集計されます。目標時間は65分です。
 
+### 追加の演習問題（外部リソース）
+
+HTML模試を解き終えたら、初めて見る問題で実力を確認するために次を使ってください（2026年11月3日時点の情報。価格は変動します）。
+
+**公式**
+
+- 試験ガイド §8 のサンプル問題（3問）：公式の練習問題はこれだけです。本ガイドには要点のみを載せているので、問題そのものは公式ガイドで解いてください。
+
+**日本語（優先）**
+
+- [CCDV-F 難問ドリル（みのるん氏）](https://html-files.minoruonda.com/public/ccdvf-drill2-share/index.html)：無料・日本語53問
+- [日本語受験対応 CCDV-F 問題集（Yota Arahata氏・Udemy）](https://www.udemy.com/course/claude-certified-developer-foundations-jp-ay/)：有料（¥3,600前後）・日本語318問
+
+**英語**
+
+- [Matthew Purcell氏の無料模試（CCDV-F）](https://www.linkedin.com/posts/purcellmatthew_claude-certified-developer-foundations-practice-activity-7484728794990354432-iH0g)：無料・英語53問のPDF（解答の誤りを指摘する声もあり）
+- [ClaudePrep（termidy）](https://claude.termidy.com/)：無料・英語（全問解くには無料登録が必要）
+
+**使い方のコツ**
+
+- 同じ問題を何周もするより、初めて見る問題で9割を安定して取れるかを指標にする。
+- 間違えた問題は公式ドキュメントで裏付けを取り、本ガイドの該当分野を読み直す。
+- 外部の問題集は非公式なので、解説の誤りや古い仕様に注意する（本ガイドの「要確認」項目も参照）。
+- 実際の試験問題を流出させた「dump」系サイト（例：ITExamsPro.com）は受験規約違反で、合格取り消しや受験禁止のリスクがあるため使わない。
+
 ---
 
 ## 11. 直前チェックリスト
