@@ -1,0 +1,7 @@
+*.mp4
+build*/
+*.log
+frames_check/
+__pycache__/
+assets/*.png
+assets/src/
