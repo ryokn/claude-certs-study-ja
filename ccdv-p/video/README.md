@@ -6,9 +6,7 @@
 
 結合版: [ccdv-p-all.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-all.mp4)（57:26。各回末尾のエンドカードは最後に1回だけ）
 
-YouTube（結合版・アップロード後に追記）: （URLを追記）
-
-提案タイトル: `CCDV-P 解説動画 全11回まとめ【非公式・試験対策】`
+YouTube（結合版・限定公開）: [CCDV-P 解説動画 全11回まとめ【非公式・試験対策】](https://youtu.be/2WwKBQUnVYU)（57:26）
 
 ## 各話の長さ
 
