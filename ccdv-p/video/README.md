@@ -2,6 +2,10 @@
 
 [`../ccdv-p-study-guide.md`](../ccdv-p-study-guide.md) をもとに、ずんだもん（解説役）と四国めたん（質問役）の対話形式で解説する非公式の学習用動画です。公式教材・公式試験問題の転載ではなく、合格を保証するものでもありません。
 
+動画本体は git に含めず Release で配布：https://github.com/ryokn/claude-certs-study-ja/releases/tag/ccdv-p-videos-v1
+
+結合版: [ccdv-p-all.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-all.mp4)（57:26。各回末尾のエンドカードは最後に1回だけ）
+
 YouTube（結合版・アップロード後に追記）: （URLを追記）
 
 提案タイトル: `CCDV-P 解説動画 全11回まとめ【非公式・試験対策】`
@@ -10,20 +14,20 @@ YouTube（結合版・アップロード後に追記）: （URLを追記）
 
 完成済み mp4 の ffprobe による長さです（各話末尾にエンドカード約4秒を含みます）。mp4 自体は git 管理外です。第10回（模擬試験の案内）は作っていません。
 
-| 回 | タイトル | ローカルファイル名 | 長さ |
-|---|---|---|---:|
-| 第0回 | 試験概要・CCDV-Fとの違い・学習プラン | `ccdv-p-s00.mp4` | 6:44 |
-| 第1回 | 本番環境の統合、信頼性、知識グラウンディング | `ccdv-p-s01.mp4` | 8:40 |
-| 第2回 | 高度なエージェントアーキテクチャとオーケストレーション | `ccdv-p-s02.mp4` | 6:11 |
-| 第3回 | オブザーバビリティと本番環境のモニタリング | `ccdv-p-s03.mp4` | 4:38 |
-| 第4回 | 評価エンジニアリングと品質保証 | `ccdv-p-s04.mp4` | 5:09 |
-| 第5回 | ランタイムガードレールと本番環境のセキュリティ | `ccdv-p-s05.mp4` | 5:00 |
-| 第6回 | 高度なデバッグとインシデント対応 | `ccdv-p-s06.mp4` | 4:22 |
-| 第7回 | ソフトウェア提供のためのエージェントフリート運用 | `ccdv-p-s07.mp4` | 5:18 |
-| 第8回 | 大規模環境でのコストとレイテンシの最適化 | `ccdv-p-s08.mp4` | 4:29 |
-| 第9回 | 公式サンプル問題の要点 | `ccdv-p-s09.mp4` | 4:07 |
-| 第11回 | 直前チェックリスト | `ccdv-p-s11.mp4` | 3:23 |
-| 合計 | | | 58:05 |
+| 回 | タイトル | 長さ | ダウンロード |
+|---|---|---:|---|
+| 第0回 | 試験概要・CCDV-Fとの違い・学習プラン | 6:44 | [ccdv-p-s00.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s00.mp4) |
+| 第1回 | 本番環境の統合、信頼性、知識グラウンディング | 8:40 | [ccdv-p-s01.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s01.mp4) |
+| 第2回 | 高度なエージェントアーキテクチャとオーケストレーション | 6:11 | [ccdv-p-s02.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s02.mp4) |
+| 第3回 | オブザーバビリティと本番環境のモニタリング | 4:38 | [ccdv-p-s03.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s03.mp4) |
+| 第4回 | 評価エンジニアリングと品質保証 | 5:09 | [ccdv-p-s04.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s04.mp4) |
+| 第5回 | ランタイムガードレールと本番環境のセキュリティ | 5:00 | [ccdv-p-s05.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s05.mp4) |
+| 第6回 | 高度なデバッグとインシデント対応 | 4:22 | [ccdv-p-s06.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s06.mp4) |
+| 第7回 | ソフトウェア提供のためのエージェントフリート運用 | 5:18 | [ccdv-p-s07.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s07.mp4) |
+| 第8回 | 大規模環境でのコストとレイテンシの最適化 | 4:29 | [ccdv-p-s08.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s08.mp4) |
+| 第9回 | 公式サンプル問題の要点 | 4:07 | [ccdv-p-s09.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s09.mp4) |
+| 第11回 | 直前チェックリスト | 3:23 | [ccdv-p-s11.mp4](https://github.com/ryokn/claude-certs-study-ja/releases/download/ccdv-p-videos-v1/ccdv-p-s11.mp4) |
+| 合計 | | 58:05 | |
 
 ## ファイル構成
 
