@@ -29,6 +29,7 @@ CCDV-P は試験ガイド **v1.0（2026年11月発効）** に基づいていま
 | `ccdv-p/ccdv-p-study-guide.md` | CCDV-P 学習ガイド（全8分野・25スキルの解説、CCDV-F との差分、公式サンプル問題の要点・直前チェックリスト・出典。模擬試験は含まずHTMLを案内） |
 | `ccdv-p/ccdv-p-mock-exam.html` | CCDV-P 模擬試験（30問、インタラクティブHTML。解答・解説・分野別スコアつき） |
 | `ccdv-p/build/` | CCDV-P 生成スクリプト・問題データ・テンプレート |
+| `ccdv-p/video/` | CCDV-P 解説動画の台本・章立て・ビルドスクリプト（mp4 は git 管理外。結合版の YouTube URL は video/README.md に追記） |
 
 > 📝 模擬試験の問題・解答・解説はすべて HTML に集約しています（学習ガイド .md には含めていません）。
 
