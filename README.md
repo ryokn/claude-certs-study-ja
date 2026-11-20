@@ -1,7 +1,8 @@
 # Claude 認定資格 学習パック（日本語）
 
-Anthropic の Claude 認定資格 **CCDV-F / CCAR-F / CCAR-P** 向けの日本語学習ガイドと模擬試験です。
-試験ガイド **v1.0** に基づいて作成しています（**2026/12/7 の改訂前**の内容）。
+Anthropic の Claude 認定資格 **CCDV-F / CCAR-F / CCAR-P / CCDV-P** 向けの日本語学習ガイドと模擬試験です。
+CCDV-F / CCAR-F / CCAR-P は試験ガイド **v1.0** に基づいて作成しています（**2026/12/7 の改訂前**の内容）。
+CCDV-P は試験ガイド **v1.0（2026年11月発効）** に基づいています（2026/11/20 時点で改訂版の公開はなし）。
 
 ## 推奨学習順序
 
@@ -10,6 +11,7 @@ Anthropic の Claude 認定資格 **CCDV-F / CCAR-F / CCAR-P** 向けの日本�
 | 1 | CCDV-F | 〜11/10 |
 | 2 | CCAR-F | 〜11/16 |
 | 3 | CCAR-P | 〜11/20–24 |
+| 4 | CCDV-P | 要確認（CCDV-F の内容を前提知識とする） |
 
 ## ファイル一覧
 
@@ -24,6 +26,9 @@ Anthropic の Claude 認定資格 **CCDV-F / CCAR-F / CCAR-P** 向けの日本�
 | `ccar-p/ccar-p-study-guide.md` | CCAR-P 学習ガイド（各分野の解説・公式サンプル問題の要点・直前チェックリスト・出典。模擬試験は含まずHTMLを案内） |
 | `ccar-p/ccar-p-mock-exam.html` | CCAR-P 模擬試験（30問、インタラクティブHTML。解答・解説・分野別スコアつき） |
 | `ccar-p/build/` | CCAR-P 生成スクリプト・問題データ・テンプレート |
+| `ccdv-p/ccdv-p-study-guide.md` | CCDV-P 学習ガイド（全8分野・25スキルの解説、CCDV-F との差分、公式サンプル問題の要点・直前チェックリスト・出典。模擬試験は含まずHTMLを案内） |
+| `ccdv-p/ccdv-p-mock-exam.html` | CCDV-P 模擬試験（30問、インタラクティブHTML。解答・解説・分野別スコアつき） |
+| `ccdv-p/build/` | CCDV-P 生成スクリプト・問題データ・テンプレート |
 
 > 📝 模擬試験の問題・解答・解説はすべて HTML に集約しています（学習ガイド .md には含めていません）。
 
@@ -41,5 +46,6 @@ Anthropic の Claude 認定資格 **CCDV-F / CCAR-F / CCAR-P** 向けの日本�
 cd ccdv-f/build && python3 gen.py     # CCDV-F
 cd ccar-f/build && python3 build.py   # CCAR-F
 cd ccar-p/build && python3 gen.py     # CCAR-P
+cd ccdv-p/build && python3 gen.py     # CCDV-P
 ```
 各スクリプトが問題データ（`questions.py` / `questions.json` / `items.json`）とテンプレート・Markdown部品から学習ガイド（.md）と模擬試験HTMLを生成します。模擬試験の問題・解答・解説は HTML にだけ出力され、.md には案内文だけが入ります。
