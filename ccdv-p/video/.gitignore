@@ -1,0 +1,16 @@
+# 完成動画・音声・ビルドキャッシュは git に入れない
+*.mp4
+*.wav
+*.mp3
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+**/build/
+
+# 大きいフォントと BGM 音源はローカルに置く（CREDITS.md と assets/bgm/README.md を参照）
+assets/fonts/*.ttc
+assets/fonts/*.otf
+assets/fonts/*.ttf
+assets/bgm/*.mp3
+assets/bgm/*.wav
